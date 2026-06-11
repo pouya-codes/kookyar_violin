@@ -35,7 +35,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -46,6 +45,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import com.kookyar.common.PersianReshape;
 import com.kookyar.common.PitchView;
@@ -68,7 +69,7 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
     private Button Kamancheh1, Kamancheh2, Kamancheh3, Kamancheh4;
     private TextView pitchLabel;
     private PitchView pitchView;
-    private CheckBox tuning;
+    private MaterialSwitch tuning;
     private Spinner kookChangeSpinner;
     OnSharedPreferenceChangeListener listener;
     SharedPreferences getprefs;
@@ -258,7 +259,7 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
         kookChangeSpinner.setOnItemSelectedListener(this);
         kookChangeSpinner.setSelection(getprefs.getInt("change", 0));
 
-        tuning = (CheckBox) findViewById(R.id.checkBox_tuning);
+        tuning = (MaterialSwitch) findViewById(R.id.checkBox_tuning);
         findViewById(R.id.tuning).setOnClickListener(this);
         tuning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

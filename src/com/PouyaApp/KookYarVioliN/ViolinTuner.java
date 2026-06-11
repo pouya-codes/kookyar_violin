@@ -360,46 +360,20 @@ public class ViolinTuner extends Activity implements OnClickListener,OnItemSelec
 		pitchView.setCenterPitch(0);
 		// TODO Auto-generated method stub
 		switch (position) {
-		case 0 :
-			double[] selectedMidiTone0 = {76,69,62,55} ;
-			Miditone = selectedMidiTone0 ;
-			break ;
-		case 1 :
-			double[] selectedMidiTone1 = {74,69,62,57} ;
-			Miditone = selectedMidiTone1 ;
-			break ;			
-		case 2 :
-			double[] selectedMidiTone2 = {76,69,64,57} ;
-			Miditone = selectedMidiTone2 ;
-			break ;		
-		case 3 :
-			double[] selectedMidiTone3 = {74,69,62,55} ;
-			Miditone = selectedMidiTone3 ;
-			break ;		
-		case 4 :
-			double[] selectedMidiTone4 = {76,69,62,52} ;
-			Miditone = selectedMidiTone4 ;
-			break ;
-		case 5 :
-			double[] selectedMidiTone5 = {76,69,64,52} ;
-			Miditone = selectedMidiTone5 ;
-			break ;
-		case 6 :
-			double[] selectedMidiTone6 = {76,69,62,57} ;
-			Miditone = selectedMidiTone6 ;
-			break ;
-		case 7 :
-			double[] selectedMidiTone7 = {76,69,59,55} ;
-			Miditone = selectedMidiTone7 ;
-			break ;
-		case 8 :
-			double[] selectedMidiTone8 = {76,69,62,52.5} ;
-			Miditone = selectedMidiTone8 ;
-			break ;
-		case 9 :
-			double[] selectedMidiTone9 = {76,69,64,52.5} ;
-			Miditone = selectedMidiTone9 ;
-			break ;
+			case 0:  Miditone = new double[]{74, 67, 60, 53}; break;   // پیش‌فرض: می-لا-ر-سل
+			case 1:  Miditone = new double[]{74, 67, 60, 50}; break;   // شور: می-لا-ر-می
+			case 2:  Miditone = new double[]{74, 67, 58.5, 55}; break; // شور: می-لا-سی کرن-لا
+			case 3:  Miditone = new double[]{74, 67, 62, 55}; break;   // ابوعطا: می-لا-می-لا
+			case 4:  Miditone = new double[]{74, 67, 60, 53}; break;   // بیات ترک: می-لا-ر-سل
+			case 5:  Miditone = new double[]{74, 67, 60, 55}; break;   // افشاری و ماهور: می-لا-ر-لا
+			case 6:  Miditone = new double[]{74, 67, 59, 53}; break;   // دشتی: می-لا-سی-سل
+			case 7:  Miditone = new double[]{74, 67, 60, 51.5}; break; // همایون و سه‌گاه: می-لا-ر-فا سری
+			case 8:  Miditone = new double[]{74, 67, 62, 55}; break;   // اصفهان: می-لا-می-لا
+			case 9:  Miditone = new double[]{72, 65, 60, 53}; break;   // اصفهان: ر-سل-ر-سل
+			case 10: Miditone = new double[]{74, 67, 62, 50}; break;   // شوشتری: می-لا-می-می
+			case 11: Miditone = new double[]{74, 67, 60, 55}; break;   // چهارگاه: می-لا-ر-لا
+			case 12: Miditone = new double[]{72, 67, 60, 55}; break;   // پیش‌فرض: ر-لا-ر-لا
+			case 13: Miditone = new double[]{74, 67, 62, 51.5}; break; // پیش‌فرض: می-لا-می-فا سری
 		}
 		
 		
