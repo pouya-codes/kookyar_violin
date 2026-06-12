@@ -36,7 +36,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +54,7 @@ import com.kookyar.common.PitchView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
-public class ViolinTuner extends AppCompatActivity implements OnClickListener, OnItemSelectedListener {
+public class ViolinTuner extends AppCompatActivity implements OnClickListener {
 
     private static final String TAG = "KookYaR";
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 1001;
@@ -65,11 +65,12 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
 
     private PdUiDispatcher dispatcher;
     public String fonts = "BZar.ttf";
-    private ImageView ivKamancheh;
+    private LinearLayout ivKamancheh;
     private Button Kamancheh1, Kamancheh2, Kamancheh3, Kamancheh4;
     private TextView pitchLabel;
     private PitchView pitchView;
     private MaterialSwitch tuning;
+    private Spinner kookSpinner;
     private Spinner kookChangeSpinner;
     OnSharedPreferenceChangeListener listener;
     SharedPreferences getprefs;
@@ -210,7 +211,7 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
 
         Typeface face = Typeface.createFromAsset(getAssets(), "font/" + fonts);
 
-        ivKamancheh = (ImageView) findViewById(R.id.ivkamancheh);
+        ivKamancheh = (LinearLayout) findViewById(R.id.layout_sim);
         Kamancheh1 = (Button) findViewById(R.id.kamancheh_1);
         Kamancheh1.setOnClickListener(this);
         Kamancheh1.setTypeface(face);
@@ -246,18 +247,49 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
             sensitiveLevel = lowSensitive;
         }
 
-        Spinner kookSpinner = (Spinner) findViewById(R.id.kookSpiner);
+        kookSpinner = (Spinner) findViewById(R.id.kookSpiner);
         ArrayAdapter<CharSequence> kookAdapter = ArrayAdapter.createFromResource(this, R.array.kouk, R.layout.spinner_item);
         kookAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         kookSpinner.setAdapter(kookAdapter);
-        kookSpinner.setOnItemSelectedListener(this);
+        kookSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                applyKookPreset(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         kookChangeSpinner = (Spinner) findViewById(R.id.spinnerKookChange);
         ArrayAdapter<CharSequence> kookChangeAdapter = ArrayAdapter.createFromResource(this, R.array.kookChange, R.layout.spinner_item);
         kookChangeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         kookChangeSpinner.setAdapter(kookChangeAdapter);
-        kookChangeSpinner.setOnItemSelectedListener(this);
-        kookChangeSpinner.setSelection(getprefs.getInt("change", 0));
+        kookChangeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                applyTranspose(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        int savedKook = getprefs.getInt("kook", 0);
+        if (savedKook < 0 || savedKook >= kookAdapter.getCount()) {
+            savedKook = 0;
+        }
+        kookSpinner.setSelection(savedKook, false);
+        applyKookPreset(savedKook);
+
+        int savedTranspose = getprefs.getInt("change", 0);
+        if (savedTranspose < 0 || savedTranspose > 3) {
+            savedTranspose = 0;
+        }
+        kookChangeSpinner.setSelection(savedTranspose, false);
+        applyTranspose(savedTranspose);
 
         tuning = (MaterialSwitch) findViewById(R.id.checkBox_tuning);
         findViewById(R.id.tuning).setOnClickListener(this);
@@ -289,6 +321,55 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
     private void selectStringButton(Button selected) {
         resetStringButtonTints();
         selected.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFFFBB33")));
+    }
+
+    private void applyKookPreset(int position) {
+        switch (position) {
+            case 0:  Miditone = new double[]{76, 69, 62, 55}; break;   // می-لا-ر-سل
+            case 1:  Miditone = new double[]{76, 69, 62, 52}; break;   // شور: می-لا-ر-می
+            case 2:  Miditone = new double[]{76, 69, 58.5, 57}; break; // شور: می-لا-سی کرن-لا
+            case 3:  Miditone = new double[]{76, 69, 64, 57}; break;   // ابوعطا: می-لا-می-لا
+            case 4:  Miditone = new double[]{76, 69, 62, 55}; break;   // بیات ترک: می-لا-ر-سل
+            case 5:  Miditone = new double[]{76, 69, 62, 57}; break;   // افشاری و ماهور: می-لا-ر-لا
+            case 6:  Miditone = new double[]{76, 69, 59, 55}; break;   // دشتی: می-لا-سی-سل
+            case 7:  Miditone = new double[]{76, 69, 62, 53.5}; break; // همایون و سه‌گاه: می-لا-ر-فا سری
+            case 8:  Miditone = new double[]{76, 69, 64, 57}; break;   // اصفهان: می-لا-می-لا
+            case 9:  Miditone = new double[]{74, 67, 62, 55}; break;   // اصفهان: ر-سل-ر-سل
+            case 10: Miditone = new double[]{76, 69, 64, 52}; break;   // شوشتری: می-لا-می-می
+            case 11: Miditone = new double[]{76, 69, 62, 57}; break;   // چهارگاه: می-لا-ر-لا
+            case 12: Miditone = new double[]{74, 69, 62, 57}; break;   // ر-لا-ر-لا
+            case 13: Miditone = new double[]{76, 69, 64, 53.5}; break; // می-لا-می-فا سری
+            default: Miditone = new double[]{74, 67, 60, 53}; break;
+        }
+
+        selectedStringIndex = -1;
+        lastTunedIndex = -1;
+        resetStringButtonTints();
+        ivKamancheh.setBackgroundResource(0);
+        pitchView.setCenterPitch(0);
+        pitchLabel.setText(PersianReshape.reshape("\u0633\u06CC\u0645 \u0645\u0648\u0631\u062F \u0646\u0638\u0631 \u062C\u0647\u062A \u06A9\u0648\u06A9 \u06A9\u0631\u062F\u0646 \u0631\u0627 \u0627\u0646\u062A\u062E\u0627\u0628 \u06A9\u0646\u06CC\u062F"));
+
+        if (getprefs != null) {
+            getprefs.edit().putInt("kook", position).apply();
+        }
+    }
+
+    private void applyTranspose(int position) {
+        switch (position) {
+            case 0: nimpardehSub = 0; break;
+            case 1: nimpardehSub = 0.5; break;
+            case 2: nimpardehSub = 1; break;
+            case 3: nimpardehSub = 2; break;
+            default: nimpardehSub = 0; break;
+        }
+
+        if (selectedStringIndex >= 0) {
+            triggerNote2((float) (Miditone[selectedStringIndex] - nimpardehSub));
+        }
+
+        if (getprefs != null) {
+            getprefs.edit().putInt("change", position).apply();
+        }
     }
 
     private void initPd() throws IOException {
@@ -375,7 +456,7 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
         lastTunedIndex = -1;
         triggerNote((float) (Miditone[i] - nimpardehSub));
         pitchLabel.setText(PersianReshape.reshape(label));
-        ivKamancheh.setImageResource(imageRes);
+        ivKamancheh.setBackgroundResource(imageRes);
         YoYo.with(Techniques.Landing).duration(700).playOn(ivKamancheh);
         Button[] btns = {Kamancheh1, Kamancheh2, Kamancheh3, Kamancheh4};
         selectStringButton(btns[i]);
@@ -389,7 +470,7 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
         String[] labels = {"\u0633\u06CC\u0645 \u0627\u0648\u0644", "\u0633\u06CC\u0645 \u062F\u0648\u0645", "\u0633\u06CC\u0645 \u0633\u0648\u0645", "\u0633\u06CC\u0645 \u0686\u0647\u0627\u0631\u0645"};
         triggerNote2((float) (Miditone[i] - nimpardehSub));
         pitchLabel.setText(PersianReshape.reshape(labels[i]));
-        ivKamancheh.setImageResource(imgs[i]);
+        ivKamancheh.setBackgroundResource(imgs[i]);
         Button[] btns = {Kamancheh1, Kamancheh2, Kamancheh3, Kamancheh4};
         selectStringButton(btns[i]);
     }
@@ -410,45 +491,4 @@ public class ViolinTuner extends AppCompatActivity implements OnClickListener, O
         }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (parent.getId() == R.id.kookSpiner) {
-            resetStringButtonTints();
-            selectedStringIndex = -1;
-            lastTunedIndex = -1;
-            ivKamancheh.setImageResource(R.drawable.violin);
-            pitchLabel.setText(PersianReshape.reshape("\u0633\u06CC\u0645 \u0645\u0648\u0631\u062F \u0646\u0638\u0631 \u062C\u0647\u062A \u06A9\u0648\u06A9 \u06A9\u0631\u062F\u0646 \u0631\u0627 \u0627\u0646\u062A\u062E\u0627\u0628 \u06A9\u0646\u06CC\u062F"));
-            pitchView.setCenterPitch(0);
-
-            switch (position) {
-                case 0: Miditone = new double[]{76, 69, 62, 55}; break;
-                case 1: Miditone = new double[]{74, 69, 62, 57}; break;
-                case 2: Miditone = new double[]{76, 69, 64, 57}; break;
-                case 3: Miditone = new double[]{74, 69, 62, 55}; break;
-                case 4: Miditone = new double[]{76, 69, 62, 52}; break;
-                case 5: Miditone = new double[]{76, 69, 64, 52}; break;
-                case 6: Miditone = new double[]{76, 69, 62, 57}; break;
-                case 7: Miditone = new double[]{76, 69, 59, 55}; break;
-                case 8: Miditone = new double[]{76, 69, 62, 52.5}; break;
-                case 9: Miditone = new double[]{76, 69, 64, 52.5}; break;
-            }
-        } else if (parent.getId() == R.id.spinnerKookChange) {
-            switch (position) {
-                case 0: nimpardehSub = 0; break;
-                case 1: nimpardehSub = 0.5; break;
-                case 2: nimpardehSub = 1; break;
-                case 3: nimpardehSub = 2; break;
-            }
-            if (selectedStringIndex >= 0) {
-                triggerNote2((float) (Miditone[selectedStringIndex] - nimpardehSub));
-            }
-            SharedPreferences.Editor editor = getprefs.edit();
-            editor.putInt("change", position);
-            editor.apply();
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
 }
