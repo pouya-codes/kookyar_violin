@@ -18,6 +18,6 @@ public class TunerHelp extends AppCompatActivity {
         Typeface face = Typeface.createFromAsset(getAssets(), "font/" + fonts);
         TextView help = (TextView) findViewById(R.id.tunerHelp);
         help.setTypeface(face);
-        help.setText(PersianReshape.reshape(help.getText().toString()));
+        help.setText(PersianReshape.forDisplay(this, help.getText().toString()));
     }
 }

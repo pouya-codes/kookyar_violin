@@ -18,6 +18,6 @@ public class Help extends AppCompatActivity {
         Typeface face = Typeface.createFromAsset(getAssets(), "font/" + fonts);
         TextView help = (TextView) findViewById(R.id.helpTV);
         help.setTypeface(face);
-        help.setText(PersianReshape.reshape(help.getText().toString()));
+        help.setText(PersianReshape.forDisplay(this, help.getText().toString()));
     }
 }

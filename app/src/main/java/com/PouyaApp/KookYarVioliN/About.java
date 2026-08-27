@@ -19,18 +19,18 @@ public class About extends AppCompatActivity {
 
         TextView tv1 = (TextView) findViewById(R.id.aboutText);
         tv1.setTypeface(face);
-        tv1.setText(PersianReshape.reshape(tv1.getText().toString()));
+        tv1.setText(PersianReshape.forDisplay(this, tv1.getText().toString()));
 
         TextView tv2 = (TextView) findViewById(R.id.aboutText1);
         tv2.setTypeface(face);
-        tv2.setText(PersianReshape.reshape(tv2.getText().toString()));
+        tv2.setText(PersianReshape.forDisplay(this, tv2.getText().toString()));
 
         TextView tv3 = (TextView) findViewById(R.id.aboutText2);
         tv3.setTypeface(face);
-        tv3.setText(PersianReshape.reshape(tv3.getText().toString()));
+        tv3.setText(PersianReshape.forDisplay(this, tv3.getText().toString()));
 
         TextView tv4 = (TextView) findViewById(R.id.aboutText3);
         tv4.setTypeface(face);
-        tv4.setText(PersianReshape.reshape(tv4.getText().toString()));
+        tv4.setText(PersianReshape.forDisplay(this, tv4.getText().toString()));
     }
 }
