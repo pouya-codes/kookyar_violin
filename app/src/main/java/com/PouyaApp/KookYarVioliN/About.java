@@ -1,5 +1,6 @@
 package com.PouyaApp.KookYarVioliN;
 
+import com.kookyar.common.KookyarFonts;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -15,7 +16,7 @@ public class About extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        Typeface face = Typeface.createFromAsset(getAssets(), "font/" + fonts);
+        Typeface face = KookyarFonts.get(this, fonts);
 
         TextView tv1 = (TextView) findViewById(R.id.aboutText);
         tv1.setTypeface(face);
